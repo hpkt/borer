@@ -28,7 +28,8 @@ object Decoder extends LowPrioDecoders {
   /**
     * Creates a [[Decoder]] from the given function.
     */
-  def apply[T](f: Reader ⇒ T): Decoder[T] = f(_)
+  def apply[T](f: Reader ⇒ T): Decoder[T] = // in 2.11 can't use SAM
+    new Decoder[T] { override def read(r: Reader) = f(r) }
 
   /**
     * Simple macro shortening `Decoder.from(Foo.apply _)` to `Decoder.forCaseClass[Foo]`

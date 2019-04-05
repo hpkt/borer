@@ -10,7 +10,7 @@ lazy val commonSettings = Seq(
   unmanagedResources in Compile += baseDirectory.value.getParentFile.getParentFile / "LICENSE",
   scmInfo := Some(ScmInfo(url("https://github.com/sirthias/borer"), "scm:git:git@github.com:sirthias/borer.git")),
 
-  scalaVersion := "2.12.8",
+  scalaVersion := "2.11.12",
   crossScalaVersions := Seq(scalaVersion.value /*, "2.13.0-M5" */),
 
   scalacOptions ++= commonScalacOptions,
@@ -46,10 +46,11 @@ lazy val commonScalacOptions = Seq(
   "-Ywarn-nullary-unit",
   "-Ywarn-numeric-widen",
   "-Ywarn-unused-import",
-  "-Ywarn-unused:imports,-patvars,-privates,-locals,-implicits,-explicits",
-  "-Xsource:2.13", // new warning: deprecate assignments in argument position
-  "-Ycache-macro-class-loader:last-modified",
-  "-Ybackend-parallelism", "8")
+  //"-Ywarn-unused:imports,-patvars,-privates,-locals,-implicits,-explicits",
+  //"-Xsource:2.13", // new warning: deprecate assignments in argument position
+  //"-Ycache-macro-class-loader:last-modified",
+  //"-Ybackend-parallelism", "8"
+)
 
 lazy val crossSettings = Seq(
   sourceDirectories in (Compile, scalafmt) := (unmanagedSourceDirectories in Compile).value,
