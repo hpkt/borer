@@ -13,20 +13,6 @@ import java.util
 object ImmutableRfcExamplesSpec extends AbstractRfcExamplesSpec[Array[Byte]]("Immutable Byte Array") {
 
   def newInput(bytes: Array[Byte]) = new SomewhatImmutableByteArrayInput(bytes, 0, 0, Array.emptyByteArray)
-  def outResultByteAccess          = byteAccess
-
-  object byteAccess extends ByteAccess[Array[Byte]] {
-    type Out = SomewhatImmutableByteArrayOutput
-
-    def newOutput = new SomewhatImmutableByteArrayOutput(new Array[Byte](8), 0)
-
-    def sizeOf(bytes: Array[Byte])                               = ByteAccess.ForByteArray.sizeOf(bytes)
-    def fromByteArray(byteArray: Array[Byte])                    = ByteAccess.ForByteArray.fromByteArray(byteArray)
-    def toByteArray(bytes: Array[Byte])                          = ByteAccess.ForByteArray.toByteArray(bytes)
-    def concat(a: Array[Byte], b: Array[Byte])                   = ByteAccess.ForByteArray.concat(a, b)
-    def convert[B](value: B)(implicit byteAccess: ByteAccess[B]) = ByteAccess.ForByteArray.convert(value)
-    def empty                                                    = ByteAccess.ForByteArray.empty
-  }
 
   final class SomewhatImmutableByteArrayOutput(buffer: Array[Byte], val cursor: Int) extends Output {
 
@@ -67,6 +53,22 @@ object ImmutableRfcExamplesSpec extends AbstractRfcExamplesSpec[Array[Byte]]("Im
 
     private def overflow() = throw new Cbor.Error.Overflow(this, "Cannot output to byte array with > 2^31 bytes")
   }
+
+  object byteAccess0 extends ByteAccess[Array[Byte]] {
+    type Out = SomewhatImmutableByteArrayOutput
+
+    def newOutput = new SomewhatImmutableByteArrayOutput(new Array[Byte](8), 0)
+
+    def sizeOf(bytes: Array[Byte])                               = ByteAccess.ForByteArray.sizeOf(bytes)
+    def fromByteArray(byteArray: Array[Byte])                    = ByteAccess.ForByteArray.fromByteArray(byteArray)
+    def toByteArray(bytes: Array[Byte])                          = ByteAccess.ForByteArray.toByteArray(bytes)
+    def concat(a: Array[Byte], b: Array[Byte])                   = ByteAccess.ForByteArray.concat(a, b)
+    def convert[B](value: B)(implicit byteAccess: ByteAccess[B]) = ByteAccess.ForByteArray.convert(value)
+    def empty                                                    = ByteAccess.ForByteArray.empty
+  }
+  implicit override val byteAccess = byteAccess0
+
+  def outResultByteAccess = byteAccess // : ByteAccess[Array[Byte]] // : ByteAccess[ByteAccess[Array[Byte]]#Out#Result] // : ByteAccess[ImmutableRfcExamplesSpec.byteAccess.Out#Result]
 
   final class SomewhatImmutableByteArrayInput(buffer: Array[Byte],
                                               val cursor: Int,

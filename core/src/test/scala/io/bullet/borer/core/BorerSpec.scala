@@ -15,7 +15,7 @@ abstract class BorerSpec[Bytes] extends TestSuite {
 
   implicit val byteAccess: ByteAccess[Bytes]
   def newInput(bytes: Array[Byte]): Input
-  def outResultByteAccess: ByteAccess[byteAccess.Out#Result]
+  def outResultByteAccess: ByteAccess[byteAccess.Out#Result] //byteAccess.Out#Result//ByteAccess[Bytes]#Out#Result//
 
   def roundTrip[T: Encoder: Decoder](hexString: String, decodedValue: T): Unit =
     roundTrip(hexString, decodedValue, decodedValue)

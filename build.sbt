@@ -46,10 +46,11 @@ lazy val commonScalacOptions = Seq(
   "-Ywarn-nullary-unit",
   "-Ywarn-numeric-widen",
   "-Ywarn-unused-import",
+  "-Ypartial-unification",
   //"-Ywarn-unused:imports,-patvars,-privates,-locals,-implicits,-explicits",
   //"-Xsource:2.13", // new warning: deprecate assignments in argument position
   //"-Ycache-macro-class-loader:last-modified",
-  //"-Ybackend-parallelism", "8"
+  //"-Ybackend-parallelism", "4"
 )
 
 lazy val crossSettings = Seq(
@@ -120,9 +121,9 @@ val `scala-reflect` = "org.scala-lang"    %  "scala-reflect"
 
 lazy val borer = project.in(file("."))
   .aggregate(coreJVM, coreJS)
-  .aggregate(akka)
-  .aggregate(scodecJVM, scodecJS)
-  .aggregate(derivationJVM, derivationJS)
+  //.aggregate(akka)
+  //.aggregate(scodecJVM, scodecJS)
+  //.aggregate(derivationJVM, derivationJS)
   .settings(commonSettings)
   .settings(publishingSettings)
   .settings(releaseSettings)
@@ -153,50 +154,50 @@ lazy val core = crossProject(JSPlatform, JVMPlatform)
   )
   .jsSettings(scalajsSettings: _*)
 
-lazy val akka = project
-  .enablePlugins(AutomateHeaderPlugin)
-  .dependsOn(coreJVM % "compile->compile;test->test")
-  .dependsOn(derivationJVM % "test->compile")
-  .settings(commonSettings)
-  .settings(publishingSettings)
-  .settings(releaseSettings)
-  .settings(
-    moduleName := "borer-compat-akka",
-    libraryDependencies ++= Seq(`akka-actor`, utest)
-  )
-
-lazy val scodecJVM = scodec.jvm
-  .dependsOn(coreJVM % "compile->compile;test->test")
-  .dependsOn(derivationJVM % "test->compile")
-lazy val scodecJS  = scodec.js
-  .dependsOn(coreJS   % "compile->compile;test->test")
-  .dependsOn(derivationJS % "test->compile")
-lazy val scodec = crossProject(JSPlatform, JVMPlatform)
-  .withoutSuffixFor(JVMPlatform)
-  .crossType(CrossType.Pure)
-  .enablePlugins(AutomateHeaderPlugin)
-  .settings(crossSettings)
-  .settings(commonSettings)
-  .settings(publishingSettings)
-  .settings(releaseSettings)
-  .settings(
-    moduleName := "borer-compat-scodec",
-    scalaJsDeps(`scodec-bits`, utest)
-  )
-  .jsSettings(scalajsSettings: _*)
-
-lazy val derivationJVM = derivation.jvm.dependsOn(coreJVM % "compile->compile;test->test")
-lazy val derivationJS  = derivation.js.dependsOn(coreJS   % "compile->compile;test->test")
-lazy val derivation = crossProject(JSPlatform, JVMPlatform)
-  .withoutSuffixFor(JVMPlatform)
-  .crossType(CrossType.Pure)
-  .enablePlugins(AutomateHeaderPlugin)
-  .settings(crossSettings)
-  .settings(commonSettings)
-  .settings(publishingSettings)
-  .settings(releaseSettings)
-  .settings(
-    moduleName := "borer-derivation",
-    scalaJsDeps(magnolia, utest)
-  )
-  .jsSettings(scalajsSettings: _*)
+//lazy val akka = project
+//  .enablePlugins(AutomateHeaderPlugin)
+//  .dependsOn(coreJVM % "compile->compile;test->test")
+//  .dependsOn(derivationJVM % "test->compile")
+//  .settings(commonSettings)
+//  .settings(publishingSettings)
+//  .settings(releaseSettings)
+//  .settings(
+//    moduleName := "borer-compat-akka",
+//    libraryDependencies ++= Seq(`akka-actor`, utest)
+//  )
+//
+//lazy val scodecJVM = scodec.jvm
+//  .dependsOn(coreJVM % "compile->compile;test->test")
+//  .dependsOn(derivationJVM % "test->compile")
+//lazy val scodecJS  = scodec.js
+//  .dependsOn(coreJS   % "compile->compile;test->test")
+//  .dependsOn(derivationJS % "test->compile")
+//lazy val scodec = crossProject(JSPlatform, JVMPlatform)
+//  .withoutSuffixFor(JVMPlatform)
+//  .crossType(CrossType.Pure)
+//  .enablePlugins(AutomateHeaderPlugin)
+//  .settings(crossSettings)
+//  .settings(commonSettings)
+//  .settings(publishingSettings)
+//  .settings(releaseSettings)
+//  .settings(
+//    moduleName := "borer-compat-scodec",
+//    scalaJsDeps(`scodec-bits`, utest)
+//  )
+//  .jsSettings(scalajsSettings: _*)
+//
+//lazy val derivationJVM = derivation.jvm.dependsOn(coreJVM % "compile->compile;test->test")
+//lazy val derivationJS  = derivation.js.dependsOn(coreJS   % "compile->compile;test->test")
+//lazy val derivation = crossProject(JSPlatform, JVMPlatform)
+//  .withoutSuffixFor(JVMPlatform)
+//  .crossType(CrossType.Pure)
+//  .enablePlugins(AutomateHeaderPlugin)
+//  .settings(crossSettings)
+//  .settings(commonSettings)
+//  .settings(publishingSettings)
+//  .settings(releaseSettings)
+//  .settings(
+//    moduleName := "borer-derivation",
+//    scalaJsDeps(magnolia, utest)
+//  )
+//  .jsSettings(scalajsSettings: _*)
